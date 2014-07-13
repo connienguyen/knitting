@@ -1,6 +1,28 @@
-from flask import Flask, render_template
+from flask import g, Flask, session, render_template, flash, request
+from flask.ext.login import LoginManager, login_user, logout_user, login_required
+from models import User
+from models import db
 from werkzeug.contrib.fixers import ProxyFix
+from forms import RegistrationForm, LoginForm
+
 app = Flask(__name__)
+app.secret_key = "Super secret key"
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+db_session = db.session
+
+def load_user_info():
+    if session.get('user_id'):
+	user = User.query.filter(username=session['user_id']).first()
+    else:
+	user = None
+    g.user = user
+
+@login_manager.user_loader
+def load_user(userid):
+    return User.get(userid)
 
 @app.route("/")
 def index():
@@ -8,17 +30,31 @@ def index():
 
 @app.route("/login")
 def login():
-    return render_template('login.html')
+    form = LoginForm()
+    if form.validate_on_submit():
+	login_user(user)
+	flash("Logged in succesfully")
+	return redirect(url_for('dashboard'))
+    return render_template('login.html', form=form)
 
 @app.route("/logout")
 def logout():
-    return render_template('logout.html')
+    logout_user()
+    return redirect(url_for('index'))
 
-@app.route("/signup")
+@app.route("/signup", methods=['GET', 'POST'])
 def signup():
-    return render_template('signup.html');
+    form = RegistrationForm(request.form)
+    if request.method == 'POST' and form.validate():
+	user = User(form.username.data, form.email.data, form.password.data)
+	db_session.add(user)
+	db_session.commit()
+	flash('Thanks for registering')
+	return redirect(url_for('login'))
+    return render_template('signup.html', form=form)
 
 @app.route("/dashboard")
+@login_required
 def dashboard():
     return render_template('dashboard.html')
 
@@ -38,5 +74,5 @@ app.wsgi_app = ProxyFix(app.wsgi_app)
 
 if __name__ == '__main__':
     app.debug = True
-    app.run()
+    app.run(port=8080)
 

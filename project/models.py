@@ -9,7 +9,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True)
     email = db.Column(db.String(120), unique=True)
-    password = db.Column(db.String(120), required=True)
+    password = db.Column(db.String(120))
 
     def __init__(self, username, email, password):
 	self.username = username
@@ -21,9 +21,9 @@ class User(db.Model):
 
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    created_by = Column(Integer, ForeignKey('user.id'))
-    file_path =  db.Column(db.String(120), required=True)
-    title = db.Column(db.String(120), required=True)
+    created_by = db.Column(db.Integer, db.ForeignKey('user.id'))
+    file_path =  db.Column(db.String(120))
+    title = db.Column(db.String(120))
     public = db.Column(db.Boolean)   
 
     def __init__(self, created_by, file_path, title, public):
@@ -37,8 +37,8 @@ class Project(db.Model):
 
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    tag = db.Column(db.String(80), required=True)
-    project_id = Column(Integer, ForeignKey('project.id'))
+    tag = db.Column(db.String(80))
+    project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
 
     def __init__(self, tag, project_id):
 	self.tag = tag
