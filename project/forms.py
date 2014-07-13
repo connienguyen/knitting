@@ -1,4 +1,4 @@
-from wtforms import Form, BooleanField, TextField, PasswordField, validators
+from wtforms import Form, BooleanField, FileField, TextField, PasswordField, validators
 from models import User
 
 class RegistrationForm(Form):
@@ -38,5 +38,9 @@ class LoginForm(Form):
         self.user = user
 	return True
 
-
+class UploadForm(Form):
+    image = FileField('Image File', [
+	validators.Required()])
+    title = TextField('Project Title', [validators.Length(min=6, max=120)])
+    public = BooleanField('Make public?')
 

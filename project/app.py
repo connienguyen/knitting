@@ -1,14 +1,18 @@
 import os
 import sqlite3
 from flask import g, Flask, session, render_template, flash, request, redirect, url_for
-from flask.ext.login import LoginManager, login_user, logout_user, login_required
-from models import User
+from flask.ext.login import LoginManager, current_user, login_user, logout_user, login_required
+from models import User, Project
 from models import db
 from werkzeug.contrib.fixers import ProxyFix
-from forms import RegistrationForm, LoginForm
+from werkzeug.utils import secure_filename
+from forms import RegistrationForm, LoginForm, UploadForm
+
+UPLOAD_FOLDER = '/var/www/connie.luperlabs.com/project/uploads/'
 
 app = Flask(__name__)
 app.secret_key = 'Super secret key'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -40,6 +44,8 @@ def index():
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated():
+	return redirect(url_for('dashboard'))
     form = LoginForm(request.form)
     if request.method == 'POST' and form.validate():
 	login_user(form.user)
@@ -66,7 +72,9 @@ def signup():
 @app.route("/dashboard")
 @login_required
 def dashboard():
-    return render_template('dashboard.html')
+    user_id = session.get('user_id')
+    projects = Project.query.filter_by(created_by=user_id).all()
+    return render_template('dashboard.html', projects=projects)
 
 @app.route("/tagged")
 def tagged():
@@ -76,9 +84,19 @@ def tagged():
 def project():
     return render_template('project.html')
 
-@app.route("/upload")
+@app.route("/upload", methods=['GET', 'POST'])
 def upload():
-    return render_template('upload.html')
+    form = UploadForm(request.form)
+    if request.method == 'POST' and form.validate():
+	image = request.files['file']
+	if file:
+	    filename = secure_filename(image.name)
+	    image_data = request.files[image.name].read()
+	    open(os.path.join(app.config['UPLOAD_FOLDER'], form.image.name), 'w').write(image_data)
+	    flash('You have uploaded a file')
+	    return redirect(url_for('dashboard'))
+	return render_template('upload.html', form = form)
+    return render_template('upload.html', form = form)
 
 app.wsgi_app = ProxyFix(app.wsgi_app)
 
