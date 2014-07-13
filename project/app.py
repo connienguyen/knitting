@@ -28,17 +28,21 @@ def load_user_info():
 
 @login_manager.user_loader
 def load_user(userid):
-    return User.get(userid)
+    try:
+	return User.query.get(userid)
+    except:
+	return None    
+    return None
 
 @app.route("/")
 def index():
     return render_template('index.html')
 
-@app.route("/login")
+@app.route("/login", methods=['GET', 'POST'])
 def login():
-    form = LoginForm()
-    if form.validate():
-	login_user(user)
+    form = LoginForm(request.form)
+    if request.method == 'POST' and form.validate():
+	login_user(form.user)
 	flash("Logged in succesfully")
 	return redirect(url_for('dashboard'))
     return render_template('login.html', form=form)

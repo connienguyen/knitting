@@ -1,4 +1,5 @@
 from wtforms import Form, BooleanField, TextField, PasswordField, validators
+from models import User
 
 class RegistrationForm(Form):
     username = TextField('Username', [validators.Length(min=4, max=25)])

@@ -1,7 +1,13 @@
 {% extends "base.html" %}
+{% from "_formhelpers.html" import render_field %}
 {% block content %}
-<p class="lead"> Hello, this is a project. </p>
-
+    <form method=post action="{{ url_for('login')  }}">
+        <dl>
+            {{ render_field(form.username) }}
+            {{ render_field(form.password) }}
+        </dl>
+        <p><input type=submit value="Log in">
+    </form>
 {% endblock %}
 
 
