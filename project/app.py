@@ -1,4 +1,6 @@
-from flask import g, Flask, session, render_template, flash, request
+import os
+import sqlite3
+from flask import g, Flask, session, render_template, flash, request, redirect, url_for
 from flask.ext.login import LoginManager, login_user, logout_user, login_required
 from models import User
 from models import db
@@ -6,12 +8,16 @@ from werkzeug.contrib.fixers import ProxyFix
 from forms import RegistrationForm, LoginForm
 
 app = Flask(__name__)
-app.secret_key = "Super secret key"
+app.secret_key = 'Super secret key'
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 
 db_session = db.session
+
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    db_session.remove()
 
 def load_user_info():
     if session.get('user_id'):
@@ -31,7 +37,7 @@ def index():
 @app.route("/login")
 def login():
     form = LoginForm()
-    if form.validate_on_submit():
+    if form.validate():
 	login_user(user)
 	flash("Logged in succesfully")
 	return redirect(url_for('dashboard'))
