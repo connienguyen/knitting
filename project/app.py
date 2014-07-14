@@ -88,14 +88,14 @@ def project():
 def upload():
     form = UploadForm(request.form)
     if request.method == 'POST' and form.validate():
-	image = request.files['file']
-	if file:
-	    filename = secure_filename(image.name)
+	image = request.files['image']
+	if image:
+	    filename = secure_filename(image.filename)
 	    image_data = request.files[image.name].read()
-	    open(os.path.join(app.config['UPLOAD_FOLDER'], form.image.name), 'w').write(image_data)
+	    open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'w').write(image_data)
 	    flash('You have uploaded a file')
 	    return redirect(url_for('dashboard'))
-	return render_template('upload.html', form = form)
+	return render_template('indexhtml', form = form)
     return render_template('upload.html', form = form)
 
 app.wsgi_app = ProxyFix(app.wsgi_app)
