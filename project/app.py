@@ -8,7 +8,8 @@ from werkzeug.contrib.fixers import ProxyFix
 from werkzeug.utils import secure_filename
 from forms import RegistrationForm, LoginForm, UploadForm
 
-UPLOAD_FOLDER = '/var/www/connie.luperlabs.com/project/uploads/'
+UPLOAD_FOLDER = os.path.dirname(os.path.realpath(__file__)) + '/uploads/'
+print 'testing: ' + UPLOAD_FOLDER
 
 app = Flask(__name__)
 app.secret_key = 'Super secret key'
@@ -87,7 +88,7 @@ def project():
 @app.route("/upload", methods=['GET', 'POST'])
 def upload():
     form = UploadForm(request.form)
-    if request.method == 'POST' and form.validate():
+    if request.method == 'POST':
 	image = request.files['image']
 	if image:
 	    filename = secure_filename(image.filename)
@@ -95,7 +96,7 @@ def upload():
 	    open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'w').write(image_data)
 	    flash('You have uploaded a file')
 	    return redirect(url_for('dashboard'))
-	return render_template('indexhtml', form = form)
+	return render_template('index.html', form = form)
     return render_template('upload.html', form = form)
 
 app.wsgi_app = ProxyFix(app.wsgi_app)
