@@ -1,14 +1,10 @@
 from PIL import Image
 
-filename = 'clooney.jpg'
-#filename = 'turkey.jpg'
-stitches = 50
-baseImage = Image.open('uploads/' + filename)
 COLOR_BLACK = (0,0,0)
 COLOR_GREY = (128, 128, 128)
-COLOR_RED = (255, 0, 0)
 
 # Colors an blockSize x blockSize pixel block + outlining grid
+# TO DO: Change to take in a color
 def colorBlock(blockSize, upperLeft, inImage, outImage):
     midBlock = int(blockSize / 2)
     blockColor = inImage.getpixel((upperLeft[0] + midBlock, upperLeft[1] + midBlock))
@@ -33,17 +29,23 @@ def colorBlock(blockSize, upperLeft, inImage, outImage):
 	    putx = upperLeft[0] + i
 	    outImage.putpixel((putx, puty), COLOR_BLACK)
 
-result = baseImage.convert('P', palette=Image.ADAPTIVE, colors=3)
-result.putalpha(0)
-colors = result.getcolors(3)
-width, height = result.size
-blockSize = 25
+filename = 'plant.png'
+stitches = 30
+maxColors = 10
+uploadedImage = Image.open('uploads/' + filename)
+width, height = uploadedImage.size
+blockSize = int(width / stitches)
 width = int(width / blockSize) * blockSize
 height = int(height / blockSize) * blockSize
+processImage = uploadedImage.resize((width, height), Image.ANTIALIAS)
+processImage = processImage.convert('P', palette=Image.ADAPTIVE, colors=maxColors)
+#adjustedImage = uploadedImage.convert('P', palette=Image.ADAPTIVE, colors=maxColors)
+processImage.putalpha(0)
+colors = processImage.getcolors(maxColors)
+#processImage = adjustedImage.resize((width, height), Image.ANTIALIAS)
+processImage.show()
 for i in range(0, width):
     for j in range (0, height):
 	if( (i % blockSize == 0) and (j % blockSize == 0)):
-	    colorBlock(blockSize, (i,j), result, result)
-result.show()
-
-#baseImage.show() #display image
+	    colorBlock(blockSize, (i,j), processImage, processImage)
+processImage.show()
