@@ -57,11 +57,12 @@ def processImage(filename='pikachu.png', stitches=60, maxColors=256):
     stitchSize = int(miniw / stitches)
     stitchesh = int(minih / stitchSize)
     miniImage = uploadedImage.resize((int(miniw), int(minih)), Image.ANTIALIAS)
+    miniImage = miniImage.convert('P', palette=Image.ADAPTIVE, colors=maxColors)
+    miniImage = miniImage.convert('RGB')
     miniImage.show()
-    miniImage = miniImage.convert('RGB', palette=Image.ADAPTIVE, colors=maxColors)
     blockSize = 25
     saveImage = Image.new('RGB', (blockSize*stitches, blockSize*stitchesh), COLOR_BLACK)
     generatePattern(stitches, blockSize, miniImage, saveImage)
     saveImage.show()
 
-processImage('pikachu.png', 50, 3)
+processImage('pikachu.png', 50, 9)
