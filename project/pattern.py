@@ -5,9 +5,8 @@ COLOR_GREY = (128, 128, 128)
 
 # Colors an blockSize x blockSize pixel block + outlining grid
 # TO DO: Change to take in a color
-def colorBlock(blockSize, upperLeft, inImage, outImage):
+def colorBlock(blockSize, blockColor, upperLeft, outImage):
     midBlock = int(blockSize / 2)
-    blockColor = inImage.getpixel((upperLeft[0] + midBlock, upperLeft[1] + midBlock))
     for i in range(0, blockSize):
 	for j in range(0, blockSize):
 	    putx = upperLeft[0] + i
@@ -29,8 +28,25 @@ def colorBlock(blockSize, upperLeft, inImage, outImage):
 	    putx = upperLeft[0] + i
 	    outImage.putpixel((putx, puty), COLOR_BLACK)
 
+# Takes in the input and the output Images and colors blocks
+# in the output Image based in the input Image. The two images
+# may no be the same size
+def generatePattern(stitchSize, blockSize, inImage, outImage):
+    midStitch = int(stitchSize / 2)
+    inWidth, inHeight = inImage.size
+    inWidth = int(inWidth / stitchSize)
+    inHeight = int(inHeight / stitchSize)
+    outWidth, outHeight = outImage.size
+    for i in range(0, inWidth):
+	for j in range(0, inHeight):
+	    getx = i * stitchSize + midStitch
+	    gety = j * stitchSize + midStitch
+	    blockColor = inImage.getpixel((getx, gety))
+	    outxy = (i * blockSize, j * blockSize)
+	    colorBlock(blockSize, blockColor, outxy, outImage)
+
 filename = 'plant.png'
-stitches = 30
+stitches = 60
 maxColors = 10
 uploadedImage = Image.open('uploads/' + filename)
 width, height = uploadedImage.size
@@ -43,9 +59,6 @@ processImage = processImage.convert('P', palette=Image.ADAPTIVE, colors=maxColor
 processImage.putalpha(0)
 colors = processImage.getcolors(maxColors)
 #processImage = adjustedImage.resize((width, height), Image.ANTIALIAS)
-processImage.show()
-for i in range(0, width):
-    for j in range (0, height):
-	if( (i % blockSize == 0) and (j % blockSize == 0)):
-	    colorBlock(blockSize, (i,j), processImage, processImage)
-processImage.show()
+patternImage = processImage.resize((int(width/blockSize) * 25, int(height/blockSize) * 25), Image.ANTIALIAS)
+generatePattern(blockSize, 25, processImage, patternImage)
+patternImage.show()
