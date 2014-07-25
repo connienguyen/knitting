@@ -9,7 +9,6 @@ from werkzeug.utils import secure_filename
 from forms import RegistrationForm, LoginForm, UploadForm
 
 UPLOAD_FOLDER = os.path.dirname(os.path.realpath(__file__)) + '/uploads/'
-print 'testing: ' + UPLOAD_FOLDER
 
 app = Flask(__name__)
 app.secret_key = 'Super secret key'
@@ -88,7 +87,7 @@ def project():
 @app.route("/upload", methods=['GET', 'POST'])
 def upload():
     form = UploadForm(request.form)
-    if request.method == 'POST':
+    if request.method == 'POST' and form.validate():
 	image = request.files['image']
 	if image:
 	    filename = secure_filename(image.filename)

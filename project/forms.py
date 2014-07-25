@@ -1,6 +1,17 @@
 from wtforms import Form, BooleanField, FileField, TextField, PasswordField, validators
 from models import User
 
+ALLOWED_IMG_EXT = set(['png', 'jpg', 'jpeg'])
+
+def checkfile(form, field):
+    print "image is " + form.image.data
+    print "field.data is " + field.data.lower()
+    #filename = field.data
+    #ext = filename.rsplit('.', 1)[1]
+    #print 'upload file extension: ' + ext
+    #if not ext.lower() in ALLOWED_IMG_EXT:
+    #	raise validators.ValidationError('File must be an image.')
+
 class RegistrationForm(Form):
     username = TextField('Username', [validators.Length(min=4, max=25)])
     email = TextField('Email Address', [validators.Length(min=6, max=35)])
@@ -39,8 +50,6 @@ class LoginForm(Form):
 	return True
 
 class UploadForm(Form):
-    image = FileField('Image File', [
-	validators.Required()])
-    title = TextField('Project Title', [validators.Length(min=6, max=120)])
-    public = BooleanField('Make public?')
-
+    image = FileField('Image File', [checkfile])
+    title = TextField('Project Title', [validators.Length(min=2, max=120)])
+    public = BooleanField('Make public?', [validators.Optional()])
