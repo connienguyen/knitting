@@ -1,5 +1,6 @@
 import os
 import sqlite3
+from datetime import datetime
 from flask import g, Flask, session, render_template, flash, request, redirect, url_for
 from flask.ext.login import LoginManager, current_user, login_user, logout_user, login_required
 from models import User, Project
@@ -7,6 +8,7 @@ from models import db
 from werkzeug.contrib.fixers import ProxyFix
 from werkzeug.utils import secure_filename
 from forms import RegistrationForm, LoginForm, UploadForm
+from pattern import processImage
 
 UPLOAD_FOLDER = os.path.dirname(os.path.realpath(__file__)) + '/uploads/'
 
@@ -18,6 +20,12 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 db_session = db.session
+
+def cleanTime(timeString):
+    x = "- :."
+    for i in range(0, len(x)):
+	timeString = timeString.replace(x[i], "")
+    return timeString
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):
@@ -91,6 +99,9 @@ def upload():
 	image = request.files['image']
 	if image:
 	    filename = secure_filename(image.filename)
+	    filename, ext = filename.split('.', 1)
+	    timestamp = cleanTime(str(datetime.now()))
+	    filename = filename + timestamp + '.' + ext
 	    image_data = request.files[image.name].read()
 	    open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'w').write(image_data)
 	    flash('You have uploaded a file')
