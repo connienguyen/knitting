@@ -4,6 +4,8 @@
     <form method=post action="{{url_for('upload')}}" enctype="multipart/form-data">
         <dl>
             {{ render_field(form.image) }}
+	    {{ render_field(form.stitches) }}
+	    {{ render_field(form.maxColors) }}
             {{ render_field(form.title) }}
 	    {{ render_field(form.public) }}
         </dl>

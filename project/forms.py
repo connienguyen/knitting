@@ -1,4 +1,4 @@
-from wtforms import Form, BooleanField, FileField, TextField, PasswordField, validators
+from wtforms import Form, IntegerField, BooleanField, FileField, TextField, PasswordField, validators
 from models import User
 
 ALLOWED_IMG_EXT = set(['png', 'jpg', 'jpeg'])
@@ -51,5 +51,11 @@ class LoginForm(Form):
 
 class UploadForm(Form):
     image = FileField('Image File', [checkfile])
+    stitches = IntegerField('Stitches across', [
+	    validators.Required(),
+	    validators.NumberRange(min=4, max=300, message="Number of stitches across must be between 4 and 300")])
+    maxColors = IntegerField('Maximum colors used (Default is 256)', [
+	    validators.Optional(), 
+	    validators.NumberRange(min=2, max=256, message="Number of colors must be between 2 and 256.")])
     title = TextField('Project Title', [validators.Length(min=2, max=120)])
-    public = BooleanField('Make public?', [validators.Optional()])
+    public = BooleanField('Make public?')

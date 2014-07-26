@@ -105,7 +105,10 @@ def upload():
 	    image_data = request.files[image.name].read()
 	    open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'w').write(image_data)
 	    flash('You have uploaded a file')
-	    patternfile = processImage(filename)
+	    if form.maxColors.data:
+		patternfile = processImage(filename, form.stitches.data, form.maxColors.data)
+	    else:
+		patternfile = processImage(filename, form.stitches.data)
 	    os.remove(UPLOAD_FOLDER + filename)
 	    print "pattern generated: ", patternfile
 	    return redirect(url_for('dashboard'))
