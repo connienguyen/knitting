@@ -105,6 +105,9 @@ def upload():
 	    image_data = request.files[image.name].read()
 	    open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'w').write(image_data)
 	    flash('You have uploaded a file')
+	    patternfile = processImage(filename)
+	    os.remove(UPLOAD_FOLDER + filename)
+	    print "pattern generated: ", patternfile
 	    return redirect(url_for('dashboard'))
 	return render_template('index.html', form = form)
     return render_template('upload.html', form = form)
