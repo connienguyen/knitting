@@ -89,9 +89,13 @@ def dashboard():
 def tagged():
     return render_template('tagged.html')
 
-@app.route("/project")
-def project():
-    return render_template('project.html')
+@app.route("/project/<pid>")
+def project(pid):
+    project = Project.query.filter_by(id=pid).first()
+    if project == None:
+	flash('Project not found.')
+	return redirect(url_for('index'))
+    return render_template('project.html', project=project)
 
 @app.route("/upload", methods=['GET', 'POST'])
 def upload():
@@ -101,7 +105,7 @@ def upload():
 	if image:
 	    filename = secure_filename(image.filename)
 	    filename, ext = filename.split('.', 1)
-	    timestamp = cleanTime(str(datetime.now()))
+	    timestamp = cleanTime(str(datetime.utcnow()))
 	    filename = filename + timestamp + '.' + ext
 	    image_data = request.files[image.name].read()
 	    open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'w').write(image_data)

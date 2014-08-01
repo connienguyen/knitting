@@ -3,8 +3,8 @@
     Hello, {{ current_user.username }}!
     <a href="{{ url_for('upload') }}" class="btn btn-default">Upload</a>
     <ul class="project">
-	{% for project in projects %}i
-	    <li><h2>{{project.title}}</h2></li>
+	{% for project in projects %}
+	    <li><a href="{{url_for('project', pid=project.id)}}">{{project.title}}</a></li>
 	{% else %}
 	    <li><em>No projects so far!</em></li>
 	{% endfor %}
