@@ -96,6 +96,15 @@ def project(pid):
 	return redirect(url_for('index'))
     return render_template('project.html', project=project)
 
+@app.route("/user/<username>")
+def user(username):
+    currUser = User.query.filter_by(id=session.get('user_id')).first()
+    user = User.query.filter_by(username=username).first()
+    if user == None:
+	flash('User not found.')
+	return redirect(url_for('index'))
+    return render_template('user.html', user=user, currUser=currUser)
+
 @app.route("/upload", methods=['GET', 'POST'])
 def upload():
     form = UploadForm(request.form)

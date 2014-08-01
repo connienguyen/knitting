@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>{{user.username}}</h2>
+    <ul class="project">
+	{% for p in user.projects %}
+	    {% if currUser == user or p.public %}
+		<li><a href="{{url_for('project', pid=p.id)}}">{{p.title}}</a></li>
+	    {% endif %}
+    {% else %}
+	<li>{{user.username}} has no projects so far!</li>
+    {% endfor %}
+{% endblock %}
+
+
