@@ -1,8 +1,23 @@
+<link rel="stylesheet" type="text/css" href="/static/css/project.css" />
 {% extends "base.html" %}
+
 {% block content %}
-    {{project.title}}
-    {{project.public}}
-    <img src="{{project.file_path}}">
+    <div class="project-wrapper">
+	<!-- Main project column -->
+	<div class="project-main">
+	    <h2>{{project.title}}</h2>
+	    <p>
+		Created by {{project.author.username}}
+	    </p>
+	    <img class="project-preview" src="{{project.file_path}}">
+	</div>
+	<!-- Project side column -->
+	<div class="project-col">
+	    <button type="button" class="btn btn-info">Download pattern</button>
+	    <button type="button" class="btn btn-default">Edit project</button>
+	    <button type="button" class="btn btn-danger">Delete project</button>
+	</div>
+    </div>
 {% endblock %}
 
 
