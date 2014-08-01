@@ -63,8 +63,8 @@ def processImage(filename='pikachu.png', stitches=60, maxColors=256):
     saveImage = Image.new('RGB', (blockSize*stitches, blockSize*stitchesh), COLOR_BLACK)
     generatePattern(stitches, blockSize, miniImage, saveImage)
     filename, ext = filename.split('.', 1)
-    saveName = filename + 'pattern.' + ext
-    saveImage.save('images/' + saveName)
+    saveName = 'images/' + filename + 'pattern.' + ext
+    saveImage.save('static/' + saveName)
     return saveName
 
 #processImage('pikachu.png', 50, 9)

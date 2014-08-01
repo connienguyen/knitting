@@ -11,7 +11,6 @@ from forms import RegistrationForm, LoginForm, UploadForm
 from pattern import processImage
 
 UPLOAD_FOLDER = os.path.dirname(os.path.realpath(__file__)) + '/uploads/'
-SAVED_FOLDER = os.path.dirname(os.path.realpath(__file__)) + '/images/'
 
 app = Flask(__name__)
 app.secret_key = 'Super secret key'
@@ -115,8 +114,8 @@ def upload():
 	    else:
 		patternfile = processImage(filename, form.stitches.data)
 	    os.remove(UPLOAD_FOLDER + filename)
-	    patternfile = SAVED_FOLDER + patternfile
-	    project = Project(session.get('user_id'), patternfile, form.title.data, form.public.data) 
+	    patternsave = url_for('static', filename=patternfile)
+	    project = Project(session.get('user_id'), patternsave, form.title.data, form.public.data) 
 	    db_session.add(project)
 	    db_session.commit()
 	    return redirect(url_for('dashboard'))

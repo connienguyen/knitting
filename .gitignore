@@ -2,4 +2,4 @@ env/
 *.pyc
 *.db
 project/uploads/
-project/images/
+project/static/images/
