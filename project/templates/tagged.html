@@ -12,6 +12,8 @@
 		<li><a href="{{url_for('project', pid=tag.project.id)}}">{{tag.project.title}}</a>
 		    by <a href="{{url_for('user', username=tag.project.author.username)}}">{{tag.project.author.username}}</a></li>
 	    {% endif %}
+	{% else %}
+	    There are no projects tagged with {{tagged}}!
 	{% endfor %}
 	</ul> 
    {% endif %}

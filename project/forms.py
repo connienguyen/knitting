@@ -62,6 +62,6 @@ class UploadForm(Form):
     tags = TextField('Tags - seperate tags using commas', [validators.Optional(), validators.Length(max=128)])
 
 class EditProjectForm(Form):
-    title = TextField('Project Title', [validators.Length(min=2, max=120)])
+    title = TextField('Project Title', [validators.Optional(), validators.Length(min=2, max=120)])
     tags = TextField('Tags: separate tags using commas', [validators.Optional()])
-    public = BooleanField('Make public?')
+    status = BooleanField('Change status?')

@@ -91,19 +91,40 @@ def tagged(tag):
 
 @app.route("/project/<pid>")
 def project(pid):
+    user = User.query.filter_by(id=session.get('user_id')).first()
     project = Project.query.filter_by(id=pid).first()
     if project == None:
 	flash('Project not found.')
 	return redirect(url_for('index'))
-    return render_template('project.html', project=project)
+    elif not project.public and user != project.author:
+	return redirect(url_for('index'))
+    return render_template('project.html', project=project, user=user)
 
 @app.route("/edit/<pid>", methods=['GET', 'POST'])
 def editProject(pid):
     project = Project.query.filter_by(id=pid).first()
+    user = User.query.filter_by(id=session.get('user_id')).first()
     form = EditProjectForm(request.form)
     if request.method == 'POST' and form.validate():
-	print 'edit project'
-    return render_template('edit.html', project=project)
+	if user == project.author:
+	    if form.title.data:
+		project.title = form.title.data
+	    if form.status.data:
+		project.public = not project.public
+	    if form.tags.data:
+		newTags = form.tags.data
+		newTags = newTags.split(',')
+		oldTags = Tag.query.filter_by(project_id=project.id).all()
+		for tag in oldTags:
+		    db_session.delete(tag)
+		for tag in newTags:
+		    tag = Tag(tag, project.id)
+		    db_session.add(tag)
+	    db_session.add(project)
+	    db_session.commit()
+	    return redirect(url_for('project', pid=project.id))
+	return redirect(url_for('index'))
+    return render_template('edit.html', form=form, project=project)
 
 @app.route("/user/<username>")
 def user(username):

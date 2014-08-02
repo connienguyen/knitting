@@ -1,0 +1,14 @@
+.edit-main{
+    float: left;
+    width: 65%;
+}
+
+.project-preview {
+    max-width: 90%;
+}
+
+.edit-col {
+    float: left;
+    margin-left: 5%;
+    width: 30%;
+}
