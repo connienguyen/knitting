@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% from "_formhelpers.html" import render_field %}
+{% block content %}
+    {{project.title}}
+    <form method=post action="{{url_for('editProject', pid=project.id)}}">
+        <dl>
+	    {{project.author.username}}
+	    <!-- {{render_field(form.tags)}} -->
+        </dl>
+        <p>
+	<input type=submit class="btn btn-info" value="Save changes">
+	<a href="{{url_for('project', pid=project.id)}}" class="btn btn-default">Cancel</a>
+    </form>
+{% endblock %}
+

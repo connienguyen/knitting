@@ -1,7 +1,20 @@
+<link rel="stylesheet" type="text/css" href="/static/css/project.css" />
 {% extends "base.html" %}
-{% block content %}
-<p class="lead"> Hello, this is a project. </p>
 
+{% block content %}
+    <h2>Projects tagged with "{{tagged}}"</h2>
+    {% if tags == None %}
+	There are no projects tagged with {{tagged}}!
+    {% else %}
+	<ul>
+	{% for tag in tags %}
+	    {% if tag.project.public %}
+		<li><a href="{{url_for('project', pid=tag.project.id)}}">{{tag.project.title}}</a>
+		    by <a href="{{url_for('user', username=tag.project.author.username)}}">{{tag.project.author.username}}</a></li>
+	    {% endif %}
+	{% endfor %}
+	</ul> 
+   {% endif %}
 {% endblock %}
 
 

@@ -59,3 +59,9 @@ class UploadForm(Form):
 	    validators.NumberRange(min=2, max=256, message="Number of colors must be between 2 and 256.")])
     title = TextField('Project Title', [validators.Length(min=2, max=120)])
     public = BooleanField('Make public?')
+    tags = TextField('Tags - seperate tags using commas', [validators.Optional(), validators.Length(max=128)])
+
+class EditProjectForm(Form):
+    title = TextField('Project Title', [validators.Length(min=2, max=120)])
+    tags = TextField('Tags: separate tags using commas', [validators.Optional()])
+    public = BooleanField('Make public?')

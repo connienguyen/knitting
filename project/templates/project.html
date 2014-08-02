@@ -7,14 +7,26 @@
 	<div class="project-main">
 	    <h2>{{project.title}}</h2>
 	    <p>
-		Created by {{project.author.username}}
+		Created by <a href="{{url_for('user', username=project.author.username)}}">{{project.author.username}}</a><br>
+		Status:
+		{% if project.public %}
+		    Public
+		{% else %}
+		    Private
+		{% endif %}
 	    </p>
 	    <img class="project-preview" src="{{project.file_path}}">
+	    <br> Tags: 
+		{% for tag in project.tags %}
+		    <a href="{{url_for('tagged', tag=tag.tag)}}">{{tag.tag}}</a>, 
+		{% else %}
+		    no tags
+		{% endfor %}
 	</div>
 	<!-- Project side column -->
 	<div class="project-col">
 	    <button type="button" class="btn btn-info">Download pattern</button>
-	    <button type="button" class="btn btn-default">Edit project</button>
+	    <a href="{{url_for('editProject', pid=project.id)}}" class="btn btn-default">Edit project</a>
 	    <button type="button" class="btn btn-danger">Delete project</button>
 	</div>
     </div>

@@ -3,11 +3,11 @@ import sqlite3
 from datetime import datetime
 from flask import g, Flask, session, render_template, flash, request, redirect, url_for
 from flask.ext.login import LoginManager, current_user, login_user, logout_user, login_required
-from models import User, Project
+from models import User, Project, Tag
 from models import db
 from werkzeug.contrib.fixers import ProxyFix
 from werkzeug.utils import secure_filename
-from forms import RegistrationForm, LoginForm, UploadForm
+from forms import RegistrationForm, LoginForm, UploadForm, EditProjectForm
 from pattern import processImage
 
 UPLOAD_FOLDER = os.path.dirname(os.path.realpath(__file__)) + '/uploads/'
@@ -84,9 +84,10 @@ def dashboard():
     projects = Project.query.filter_by(created_by=user_id).all()
     return render_template('dashboard.html', projects=projects)
 
-@app.route("/tagged")
-def tagged():
-    return render_template('tagged.html')
+@app.route("/tagged/<tag>")
+def tagged(tag):
+    tags = Tag.query.filter_by(tag=tag).all()
+    return render_template('tagged.html', tags=tags, tagged=tag)
 
 @app.route("/project/<pid>")
 def project(pid):
@@ -95,6 +96,14 @@ def project(pid):
 	flash('Project not found.')
 	return redirect(url_for('index'))
     return render_template('project.html', project=project)
+
+@app.route("/edit/<pid>", methods=['GET', 'POST'])
+def editProject(pid):
+    project = Project.query.filter_by(id=pid).first()
+    form = EditProjectForm(request.form)
+    if request.method == 'POST' and form.validate():
+	print 'edit project'
+    return render_template('edit.html', project=project)
 
 @app.route("/user/<username>")
 def user(username):
@@ -127,6 +136,14 @@ def upload():
 	    project = Project(session.get('user_id'), patternsave, form.title.data, form.public.data) 
 	    db_session.add(project)
 	    db_session.commit()
+	    tags = form.tags.data
+	    if tags:
+		tags = tags.split(',')
+		for tag in tags:
+		    if tag != '':
+			tag = Tag(tag, project.id)
+			db_session.add(tag)
+		db_session.commit()
 	    return redirect(url_for('dashboard'))
 	return render_template('index.html', form = form)
     return render_template('upload.html', form = form)

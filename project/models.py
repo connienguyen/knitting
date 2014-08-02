@@ -43,6 +43,7 @@ class Project(db.Model):
     file_path =  db.Column(db.String(120))
     title = db.Column(db.String(120))
     public = db.Column(db.Boolean)   
+    tags = db.relationship('Tag', backref='project', lazy='dynamic')
 
     def __init__(self, created_by, file_path, title, public):
 	self.created_by = created_by

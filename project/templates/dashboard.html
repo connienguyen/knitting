@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-    Hello, {{ current_user.username }}!
+    Hello, <a href="{{url_for('user', username=current_user.username)}}">{{ current_user.username }}</a>!
     <a href="{{ url_for('upload') }}" class="btn btn-default">Upload</a>
     <ul class="project">
 	{% for project in projects %}
