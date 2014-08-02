@@ -1,11 +1,10 @@
-<link rel="stylesheet" type="text/css" href="/static/css/project.css" />
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="project-wrapper">
+    <div class="content-wrapper">
+	<h2 class="project-title">{{project.title}}</h2>
 	<!-- Main project column -->
-	<div class="project-main">
-	    <h2>{{project.title}}</h2>
+	<div class="content-main">
 	    <p>
 		Created by <a href="{{url_for('user', username=project.author.username)}}">{{project.author.username}}</a><br>
 		Status:
@@ -18,13 +17,13 @@
 	    <img class="project-preview" src="{{project.file_path}}"/>
 	    <br> Tags: 
 		{% for tag in project.tags %}
-		    <a href="{{url_for('tagged', tag=tag.tag)}}">{{tag.tag}}</a>, 
+		    <a class="tag" href="{{url_for('tagged', tag=tag.tag)}}">{{tag.tag}}</a>, 
 		{% else %}
 		    no tags
 		{% endfor %}
 	</div>
 	<!-- Project side column -->
-	<div class="project-col">
+	<div class="content-side">
 	    <button type="button" class="btn btn-info">Download pattern</button>
 	    {% if user == project.author %}
 		<a href="{{url_for('editProject', pid=project.id)}}" class="btn btn-default">Edit project</a>

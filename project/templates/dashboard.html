@@ -1,14 +1,23 @@
 {% extends "base.html" %}
 {% block content %}
-    Hello, <a href="{{url_for('user', username=current_user.username)}}">{{ current_user.username }}</a>!
-    <a href="{{ url_for('upload') }}" class="btn btn-default">Upload</a>
-    <ul class="project">
-	{% for project in projects %}
-	    <li><a href="{{url_for('project', pid=project.id)}}">{{project.title}}</a></li>
-	{% else %}
-	    <li><em>No projects so far!</em></li>
-	{% endfor %}
-    </ul>    
+    <div class="content-wrapper">
+    <h2>Hello, <a href="{{url_for('user', username=current_user.username)}}">{{ current_user.username }}</a>!</h2>
+	<!-- Main column -->
+	<div class="content-main">
+	    <ul class="project">
+		{% for project in projects %}
+		    <li><a href="{{url_for('project', pid=project.id)}}">{{project.title}}</a></li>
+		{% else %}
+		    <li><em>No projects so far!</em></li>
+		{% endfor %}
+	    </ul>
+	</div>    
+ 
+	<!-- Side column -->
+	<div class="content-side">
+	    <a href="{{url_for('upload')}}" class="btn btn-success override">Upload a new project</a>
+	</div>
+    </div>
 {% endblock %}
 
 

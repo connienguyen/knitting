@@ -1,10 +1,10 @@
-<link rel="stylesheet" type="text/css" href="/static/css/edit.css">
 {% extends "base.html" %}
 {% from "_formhelpers.html" import render_field %}
 {% block content %}
-    <h2>Make changes to "{{project.title}}"</h2>
+    <div class="content-wrapper">
+	<h2>Make changes to "{{project.title}}"</h2>
 	<!-- Main column -->
-	<div class="edit-main">
+	<div class="content-main">
 	    Created by <a href="{{url_for('user', username=project.author.username)}}">{{project.author.username}}</a>
 	    <br> Status: 
 	    {% if project.public %}
@@ -16,7 +16,7 @@
 	</div>
 
 	<!-- Side column -->
-	<div class="edit-col">
+	<div class="content-side">
 	    <h3>Edit project details</h3>
 	    <p class="instructions">
 		Change only the fields you want to edit. Any fields you do not change or leave blank will remain the same.
@@ -31,5 +31,6 @@
 		<a href="{{url_for('project', pid=project.id)}}" class="btn btn-default">Cancel</a>
 	    </form>
 	</div>
+    </div>
 {% endblock %}
 
