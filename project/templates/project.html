@@ -13,21 +13,21 @@
 		{% else %}
 		    Private
 		{% endif %}
+		<br> Tags:
+		    {% for tag in project.tags %}
+			<a class="tag" href="{{url_for('tagged', tag=tag.tag)}}">{{tag.tag}}</a>
+		    {% else %}
+			no tags
+		    {% endfor %}
 	    </p>
 	    <img class="project-preview" src="{{project.file_path}}"/>
-	    <br> Tags: 
-		{% for tag in project.tags %}
-		    <a class="tag" href="{{url_for('tagged', tag=tag.tag)}}">{{tag.tag}}</a>, 
-		{% else %}
-		    no tags
-		{% endfor %}
 	</div>
 	<!-- Project side column -->
 	<div class="content-side">
 	    <button type="button" class="btn btn-info">Download pattern</button>
 	    {% if user == project.author %}
 		<a href="{{url_for('editProject', pid=project.id)}}" class="btn btn-default">Edit project</a>
-		<button type="button" class="btn btn-danger">Delete project</button>
+		<a href="{{url_for('removeProject', pid=project.id)}}" class="btn btn-danger">Delete project</a>
 	    {% endif %}
 	</div>
     </div>

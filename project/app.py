@@ -126,6 +126,18 @@ def editProject(pid):
 	return redirect(url_for('index'))
     return render_template('edit.html', form=form, project=project)
 
+@app.route("/remove/<pid>")
+def removeProject(pid):
+    project = Project.query.filter_by(id=pid).first()
+    user = User.query.filter_by(id=session.get('user_id')).first()
+    if user == project.author:
+	for tag in project.tags:
+	    db_session.delete(tag)
+	db_session.delete(project)
+	db_session.commit()
+	return redirect(url_for('dashboard'))
+    return redirect(url_for('project', pid=project.id))
+
 @app.route("/user/<username>")
 def user(username):
     currUser = User.query.filter_by(id=session.get('user_id')).first()
