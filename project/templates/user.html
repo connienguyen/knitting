@@ -2,14 +2,35 @@
 
 {% block content %}
     <h2>{{user.username}}</h2>
-    <ul class="project">
+    <table class="table table-striped">
+	<thead>
+	    <tr>
+		<th class="col-md-2"></th>
+		<th class="col-md-4"></th>
+		<th class="col-md-6"></th>
+	    </tr>
+	<thead>
+	<tbody>
 	{% for p in user.projects %}
 	    {% if currUser == user or p.public %}
-		<li><a href="{{url_for('project', pid=p.id)}}">{{p.title}}</a></li>
+		<tr>
+		    <td><img style="max-height: 50px" src="{{p.file_path}}"></td>
+		    <td><a href="{{url_for('project', pid=p.id)}}">{{p.title}}</a></td>
+		    <td> {% for tag in p.tags %}
+			    <a class="tag" href="{{url_for('tagged', tag=tag.tag)}}">{{tag.tag}}</a>
+			 {% else %}
+			    no tags
+			 {% endfor %}
+		    </td>
+		</tr>
 	    {% endif %}
-    {% else %}
-	<li>{{user.username}} has no projects so far!</li>
-    {% endfor %}
+	{% else %}
+	    <tr>
+		<td></td><td>{{user.username}} has no projects so far!</td><td><td>
+	    </tr>
+	{% endfor %}
+	</tbody>
+    </table>
 {% endblock %}
 
 

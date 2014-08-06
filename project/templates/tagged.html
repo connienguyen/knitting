@@ -4,18 +4,36 @@
 {% block content %}
     <h2>Projects tagged with "{{tagged}}"</h2>
     {% if tags == None %}
-	There are no projects tagged with {{tagged}}!
+	<em>There are no projects tagged with {{tagged}}!</em>
     {% else %}
-	<ul>
-	{% for tag in tags %}
-	    {% if tag.project.public %}
-		<li><a href="{{url_for('project', pid=tag.project.id)}}">{{tag.project.title}}</a>
-		    by <a href="{{url_for('user', username=tag.project.author.username)}}">{{tag.project.author.username}}</a></li>
-	    {% endif %}
-	{% else %}
-	    There are no projects tagged with {{tagged}}!
-	{% endfor %}
-	</ul> 
+	<table class="table table-striped">
+	    <thead>
+		<tr>
+		    <th class-"col-md-2"></th>
+		    <th class="col-md-4"></th>
+		    <th class="col-md-6"></th>
+		</tr>
+	    </thead>
+	    <tbody>
+	    {% for tag in tags %}
+		{% if tag.project.public %}
+		    <tr>
+			<td><img class="project-thumb" style="max-height: 50px" src="{{tag.project.file_path}}"></td>
+			<td><a href="{{url_for('project', pid=tag.project.id)}}">{{tag.project.title}}</a>
+			    by <a href="{{url_for('user', username=tag.project.author.username)}}">{{tag.project.author.username}}</a></td>
+			<td> {% for ptag in tag.project.tags %}
+				<a class="tag" href="{{url_for('tagged', tag=ptag.tag)}}">{{ptag.tag}}</a>
+			     {% else %}
+				no tags
+			     {% endfor %}
+			</td>
+		    </tr>
+		{% endif %}
+	    {% else %}
+		There are no projects tagged with {{tagged}}!
+	    {% endfor %}
+	    </tbody>
+	</table> 
    {% endif %}
 {% endblock %}
 

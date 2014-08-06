@@ -4,13 +4,35 @@
     <h2>Hello, <a href="{{url_for('user', username=current_user.username)}}">{{ current_user.username }}</a>!</h2>
 	<!-- Main column -->
 	<div class="content-main">
-	    <ul class="project">
-		{% for project in projects %}
-		    <li><a href="{{url_for('project', pid=project.id)}}">{{project.title}}</a></li>
-		{% else %}
-		    <li><em>No projects so far!</em></li>
-		{% endfor %}
-	    </ul>
+	    <table class="table table-striped">
+		<thead>
+		    <tr>
+			<th class="col-md-2"></th>
+			<th class="col-md-6"></th>
+			<th class="col-md-4"></th>
+		    </tr>
+		</thead>
+		<tbody>
+		    {% for project in projects %}
+			<tr>
+			    <td><img class="project-thumb" style="max-height: 50px" src="{{project.file_path}}"></td>
+			    <td><a href="{{url_for('project', pid=project.id)}}">{{project.title}}</a></td>
+			    <td> {% for tag in project.tags %}
+				    <a href="{{url_for('tagged', tag=tag.tag)}}">{{tag.tag}}</a>
+				 {% else %}
+				    no tags
+				 {% endfor %}
+			    </td>
+			</tr>
+		    {% else %}
+			<tr>
+			    <td></td>
+			    <td><em>No projects so far!</em></td>
+			    <td></td>
+			</tr>
+		    {% endfor %}
+		</tbody>
+	    </table>
 	</div>    
  
 	<!-- Side column -->

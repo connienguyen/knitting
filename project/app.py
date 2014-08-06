@@ -118,7 +118,7 @@ def editProject(pid):
 		for tag in oldTags:
 		    db_session.delete(tag)
 		for tag in newTags:
-		    tag = Tag(tag, project.id)
+		    tag = Tag(tag.strip(), project.id)
 		    db_session.add(tag)
 	    db_session.add(project)
 	    db_session.commit()
@@ -174,7 +174,7 @@ def upload():
 		tags = tags.split(',')
 		for tag in tags:
 		    if tag != '':
-			tag = Tag(tag, project.id)
+			tag = Tag(tag.strip(), project.id)
 			db_session.add(tag)
 		db_session.commit()
 	    return redirect(url_for('dashboard'))
