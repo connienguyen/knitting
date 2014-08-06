@@ -12,6 +12,12 @@
 	    {% else %}
 		Private
 	    {% endif %}
+	    <br>Tags:
+		{% for tag in project.tags %}
+		    <a class="tag" href="{{url_for('tagged', tag=tag)}}">{{tag.tag}}</a>
+		{% else %}
+		    no tags
+		{% endfor %}
 	    <img class="project-preview" src="{{project.file_path}}" />
 	</div>
 

@@ -15,10 +15,10 @@
 		<tbody>
 		    {% for project in projects %}
 			<tr>
-			    <td><img class="project-thumb" style="max-height: 50px" src="{{project.file_path}}"></td>
-			    <td><a href="{{url_for('project', pid=project.id)}}">{{project.title}}</a></td>
+			    <td><img class="project-thumb" src="{{project.file_path}}"></td>
+			    <td><a class="project-title-table" href="{{url_for('project', pid=project.id)}}">{{project.title}}</a></td>
 			    <td> {% for tag in project.tags %}
-				    <a href="{{url_for('tagged', tag=tag.tag)}}">{{tag.tag}}</a>
+				    <a class="tag" href="{{url_for('tagged', tag=tag.tag)}}">{{tag.tag}}</a>
 				 {% else %}
 				    no tags
 				 {% endfor %}
