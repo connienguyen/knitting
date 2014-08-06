@@ -24,10 +24,10 @@
 	</div>
 	<!-- Project side column -->
 	<div class="content-side">
-	    <a class="btn btn-info" href="{{project.file_path}}" target="_blank">Download pattern</a>
+	    <a class="btn btn-info" href="{{project.file_path}}" target="_blank"><span class="fa fa-image"></span> Download pattern</a>
 	    {% if user == project.author %}
-		<a href="{{url_for('editProject', pid=project.id)}}" class="btn btn-default">Edit project</a>
-		<a href="{{url_for('removeProject', pid=project.id)}}" class="btn btn-danger">Delete project</a>
+		<a href="{{url_for('editProject', pid=project.id)}}" class="btn btn-default"><span class="fa fa-pencil"></span> Edit project</a>
+		<a href="{{url_for('removeProject', pid=project.id)}}" class="btn btn-danger"><span class="fa fa-trash-o"></span> Delete project</a>
 	    {% endif %}
 	</div>
     </div>

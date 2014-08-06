@@ -11,6 +11,7 @@ from forms import RegistrationForm, LoginForm, UploadForm, EditProjectForm
 from pattern import processImage
 
 UPLOAD_FOLDER = os.path.dirname(os.path.realpath(__file__)) + '/uploads/'
+IMG_EXTS = ['jpg', 'jpeg', 'png']
 
 app = Flask(__name__)
 app.secret_key = 'Super secret key'
@@ -155,6 +156,8 @@ def upload():
 	if image:
 	    filename = secure_filename(image.filename)
 	    filename, ext = filename.split('.', 1)
+	    if ext not in IMG_EXT:
+		return redirect(url_for('dashboard'))
 	    timestamp = cleanTime(str(datetime.utcnow()))
 	    filename = filename + timestamp + '.' + ext
 	    image_data = request.files[image.name].read()
@@ -178,7 +181,7 @@ def upload():
 			db_session.add(tag)
 		db_session.commit()
 	    return redirect(url_for('dashboard'))
-	return render_template('index.html', form = form)
+	return redirect(url_for('index.html'))
     return render_template('upload.html', form = form)
 
 app.wsgi_app = ProxyFix(app.wsgi_app)
