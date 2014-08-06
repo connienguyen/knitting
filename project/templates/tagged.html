@@ -19,8 +19,8 @@
 		{% if tag.project.public %}
 		    <tr>
 			<td><img class="project-thumb" style="max-height: 50px" src="{{tag.project.file_path}}"></td>
-			<td><a href="{{url_for('project', pid=tag.project.id)}}">{{tag.project.title}}</a>
-			    by <a href="{{url_for('user', username=tag.project.author.username)}}">{{tag.project.author.username}}</a></td>
+			<td><a class="table-project-title" href="{{url_for('project', pid=tag.project.id)}}">{{tag.project.title}}</a>
+		        <br>by <a href="{{url_for('user', username=tag.project.author.username)}}">{{tag.project.author.username}}</a></td>
 			<td> {% for ptag in tag.project.tags %}
 				<a class="tag" href="{{url_for('tagged', tag=ptag.tag)}}">{{ptag.tag}}</a>
 			     {% else %}

@@ -14,8 +14,8 @@
 	{% for p in user.projects %}
 	    {% if currUser == user or p.public %}
 		<tr>
-		    <td><img style="max-height: 50px" src="{{p.file_path}}"></td>
-		    <td><a href="{{url_for('project', pid=p.id)}}">{{p.title}}</a></td>
+		    <td><img class="project-thumb" src="{{p.file_path}}"></td>
+		    <td><a class="table-project-title" href="{{url_for('project', pid=p.id)}}">{{p.title}}</a></td>
 		    <td> {% for tag in p.tags %}
 			    <a class="tag" href="{{url_for('tagged', tag=tag.tag)}}">{{tag.tag}}</a>
 			 {% else %}
