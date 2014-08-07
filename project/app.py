@@ -7,7 +7,7 @@ from models import User, Project, Tag
 from models import db
 from werkzeug.contrib.fixers import ProxyFix
 from werkzeug.utils import secure_filename
-from forms import RegistrationForm, LoginForm, UploadForm, EditProjectForm
+from forms import SearchForm, RegistrationForm, LoginForm, UploadForm, EditProjectForm
 from pattern import processImage
 
 UPLOAD_FOLDER = os.path.dirname(os.path.realpath(__file__)) + '/uploads/'
@@ -28,6 +28,11 @@ def cleanTime(timeString):
     for i in range(0, len(x)):
 	timeString = timeString.replace(x[i], "")
     return timeString
+
+@app.before_request
+def before_request():
+    print "Does this"
+    g.search_form = SearchForm()
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):
@@ -51,6 +56,18 @@ def load_user(userid):
 @app.route("/")
 def index():
     return render_template('index.html')
+
+@app.route("/search", methods=['POST'])
+def search():
+    print "Search query", g.search_form.search.data
+    if not g.search_form.validate():
+	return redirect(url_for('index'))
+    return redirect(url_for('search_results', query=g.search_form.search.data))
+
+@app.route("/search/<query>")
+def search_results(query):
+    results = Projects.query.whoosh_search(query, 3).all()
+    return render_template('search_results.html', query=query, results=result)
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():

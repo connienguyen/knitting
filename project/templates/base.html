@@ -39,7 +39,13 @@
 			    <li><a href="{{url_for('signup')}}"><span class="fa fa-laptop"></span> Sign Up</a></li>
 			{% endif %}
 		    </ul>
+
+		    <div class="nav pull-right">
+			<form class="navbar-form navbar-right"  action="{{url_for('search')}}" method="post" name="search">
+			    {{g.search_form.search(size=20)}}
+		    </div>
 		</div><!--/.nav-collapse -->
+    
 	    </div>
 	</div>
 

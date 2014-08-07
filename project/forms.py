@@ -12,6 +12,9 @@ def checkfile(form, field):
     #if not ext.lower() in ALLOWED_IMG_EXT:
     #	raise validators.ValidationError('File must be an image.')
 
+class SearchForm(Form):
+    search = TextField('search', [validators.Required()])
+
 class RegistrationForm(Form):
     username = TextField('Username', [validators.Length(min=4, max=25)])
     email = TextField('Email Address', [validators.Length(min=6, max=35)])

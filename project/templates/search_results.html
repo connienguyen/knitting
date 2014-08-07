@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% blockcontent %}
+    <h1>Search results for "{{query}}"</h1>
+    <ul>
+    {% for r in results %}
+	<li>r.title</li>
+    {% endfor %}
+    </ul>
+{% endblock %}

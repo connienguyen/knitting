@@ -1,12 +1,15 @@
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
+import flask.ext.whooshalchemy as whooshalchemy
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+app.config['WHOOSH_BASE'] = 'sqliteL///search.db'
 db = SQLAlchemy(app)
 
 class User(db.Model):
     __tablename__ = 'users'
+    __searchable__ = ['username']
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True)
     email = db.Column(db.String(120), unique=True)
@@ -38,6 +41,7 @@ class User(db.Model):
 
 class Project(db.Model):
     __tablename__ = 'projects'
+    __searchable__ = ['title']
     id = db.Column(db.Integer, primary_key=True)
     created_by = db.Column(db.Integer, db.ForeignKey('users.id'))
     file_path =  db.Column(db.String(120))
@@ -62,6 +66,7 @@ class Project(db.Model):
 
 class Tag(db.Model):
     __tablename__ = 'tags'
+    __searchable__ = ['tag']
     id = db.Column(db.Integer, primary_key=True)
     tag = db.Column(db.String(80))
     project_id = db.Column(db.Integer, db.ForeignKey('projects.id'))
