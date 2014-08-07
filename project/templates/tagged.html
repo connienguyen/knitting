@@ -3,7 +3,7 @@
 
 {% block content %}
     <h2>Projects tagged with "{{tagged}}"</h2>
-    {% if tags == None %}
+    {% if tags.items == None %}
 	<em>There are no projects tagged with {{tagged}}!</em>
     {% else %}
 	<table class="table table-striped">
@@ -15,7 +15,7 @@
 		</tr>
 	    </thead>
 	    <tbody>
-	    {% for tag in tags %}
+	    {% for tag in tags.items %}
 		{% if tag.project.public %}
 		    <tr>
 			<td><img class="project-thumb" style="max-height: 50px" src="{{tag.project.file_path}}"></td>
@@ -33,7 +33,21 @@
 		There are no projects tagged with {{tagged}}!
 	    {% endfor %}
 	    </tbody>
-	</table> 
+	</table>
+
+	<!-- Pagination controls --> 
+	<ul class="pagination">
+	{% if tags.has_prev %}
+	    <li class="active"><a href="{{url_for('tagged', tag=tagged, page=tags.prev_num)}}">&laquo; Older</a></li>
+	{% else %}
+	    <li class="disabled"><a href="#">&laquo; Older</a></li>
+	{% endif %}
+	{% if tags.has_next %}
+	    <li class="active"><a href="{{url_for('tagged', tag=tagged, page=tags.next_num)}}">Newer &raquo;</a></li>
+	{% else %}
+	    <li class="disabled"><a href="#">Newer &raquo;</a></li>
+	{% endif %}
+	</ul>
    {% endif %}
 {% endblock %}
 

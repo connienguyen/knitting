@@ -88,8 +88,9 @@ def dashboard(page=1):
     return render_template('dashboard.html', projects=projects)
 
 @app.route("/tagged/<tag>")
-def tagged(tag):
-    tags = Tag.query.filter_by(tag=tag).all()
+@app.route("/tagged/<tag>/<int:page>")
+def tagged(tag, page=1):
+    tags = Tag.query.filter_by(tag=tag).order_by(Tag.project_id.desc()).paginate(page, POSTS_PER_PAGE, False)
     return render_template('tagged.html', tags=tags, tagged=tag)
 
 @app.route("/project/<pid>")
@@ -142,13 +143,16 @@ def removeProject(pid):
     return redirect(url_for('project', pid=project.id))
 
 @app.route("/user/<username>")
-def user(username):
+@app.route("/user/<username>/<int:page>")
+def user(username, page=1):
     currUser = User.query.filter_by(id=session.get('user_id')).first()
     user = User.query.filter_by(username=username).first()
     if user == None:
 	flash('User not found.')
 	return redirect(url_for('index'))
-    return render_template('user.html', user=user, currUser=currUser)
+    else:
+	projects = Project.query.filter_by(created_by=user.id).order_by(Project.id.desc()).paginate(page, POSTS_PER_PAGE, False)
+	return render_template('user.html', user=user, currUser=currUser, projects=projects)
 
 @app.route("/upload", methods=['GET', 'POST'])
 def upload():

@@ -11,7 +11,7 @@
 	    </tr>
 	</thead>
 	<tbody>
-	{% for p in user.projects %}
+	{% for p in projects.items %}
 	    {% if currUser == user or p.public %}
 		<tr>
 		    <td><img class="project-thumb" src="{{p.file_path}}"></td>
@@ -31,6 +31,18 @@
 	{% endfor %}
 	</tbody>
     </table>
+
+    <ul class="pagination">    
+    {% if projects.has_prev %}
+	<li class="active"><a href="{{url_for('user', username=user.username, page=projects.prev_num)}}">&laquo; Older</a></li>
+    {% else %}
+	<li class="disabled"><a href="#">&laquo; Older</a></li>
+    {% endif %}
+    {% if projects.has_next %}
+	<li class="active"><a href="{{url_for('user', username=user.username, page=projects.next_num)}}">Newer &raquo;</a></li>
+    {% else %}
+	<li class="disabled"><a href="#">Newer &raquo;</a></li>
+    {% endif %}
 {% endblock %}
 
 
