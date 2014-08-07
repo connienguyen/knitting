@@ -9,7 +9,6 @@ h2 {
 }
 
 h2.project-title {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 28pt;
 }
 
@@ -116,6 +115,16 @@ a.table-project-title {
 .content-side .btn {
     width: 85%;
     margin-bottom: 10px;
+}
+
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus {
+    background-color: #42CFC3;
+    border-color: #38C5B9;
 }
 
 .footer, .push {

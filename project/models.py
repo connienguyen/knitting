@@ -43,13 +43,19 @@ class Project(db.Model):
     file_path =  db.Column(db.String(120))
     title = db.Column(db.String(120))
     public = db.Column(db.Boolean)   
+    across = db.Column(db.Integer)
+    tall = db.Column(db.Integer)
+    colors = db.Column(db.Integer)
     tags = db.relationship('Tag', backref='project', lazy='dynamic')
 
-    def __init__(self, created_by, file_path, title, public):
+    def __init__(self, created_by, file_path, title, public, across, tall, colors):
 	self.created_by = created_by
 	self.file_path = file_path
 	self.title = title
 	self.public = public
+	self.across = across
+	self.tall = tall
+	self.colors = colors
 
     def __repr__(self):
 	return '<Project %r>' % self.title

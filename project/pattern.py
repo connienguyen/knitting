@@ -44,6 +44,7 @@ def generatePattern(stitches, blockSize, inImage, outImage):
 	    blockColor = inImage.getpixel((getx, gety))
 	    outxy = (i * blockSize, j * blockSize)
 	    colorBlock(blockSize, blockColor, outxy, outImage)
+    return inWidth, inHeight
 	
 def processImage(filename='pikachu.png', stitches=60, maxColors=256):
     uploadedImage = Image.open('uploads/' + filename)
@@ -61,10 +62,10 @@ def processImage(filename='pikachu.png', stitches=60, maxColors=256):
     miniImage = miniImage.convert('RGB')
     blockSize = 25
     saveImage = Image.new('RGB', (blockSize*stitches, blockSize*stitchesh), COLOR_BLACK)
-    generatePattern(stitches, blockSize, miniImage, saveImage)
+    across, tall = generatePattern(stitches, blockSize, miniImage, saveImage)
     filename, ext = filename.split('.', 1)
     saveName = 'images/' + filename + 'pattern.' + ext
     saveImage.save('static/' + saveName)
-    return saveName
+    return saveName, across, tall
 
 #processImage('pikachu.png', 50, 9)

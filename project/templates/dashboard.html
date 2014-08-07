@@ -13,7 +13,8 @@
 		    </tr>
 		</thead>
 		<tbody>
-		    {% for project in projects %}
+		    <!-- Now a Paginate object -->
+		    {% for project in projects.items %}
 			<tr>
 			    <td><img class="project-thumb" src="{{project.file_path}}"></td>
 			    <td><a class="table-project-title" href="{{url_for('project', pid=project.id)}}">{{project.title}}</a></td>
@@ -33,6 +34,20 @@
 		    {% endfor %}
 		</tbody>
 	    </table>
+	    
+	    <!-- Pagination UI -->
+	    <ul class="pagination">
+	    {% if projects.has_prev %}
+		<li class="active"><a href="{{url_for('dashboard', page=projects.prev_num)}}">&laquo;</a></li>
+	    {% else %}
+		<li class="disabled"><a href="#">&laquo;</a></li>
+	    {% endif %}
+	    {% if projects.has_next %}
+		<li class="active"><a href="{{url_for('dashboard', page=projects.next_num)}}">&raquo;</a></li>
+	    {% else %}
+		<li class="disabled"><a href="#">&raquo;</a></li>
+	    {% endif %}
+	    </ul>
 	</div>    
  
 	<!-- Side column -->

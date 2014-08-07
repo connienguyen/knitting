@@ -12,6 +12,7 @@ from pattern import processImage
 
 UPLOAD_FOLDER = os.path.dirname(os.path.realpath(__file__)) + '/uploads/'
 IMG_EXTS = ['jpg', 'jpeg', 'png']
+POSTS_PER_PAGE = 2
 
 app = Flask(__name__)
 app.secret_key = 'Super secret key'
@@ -79,10 +80,11 @@ def signup():
     return render_template('signup.html', form=form)
 
 @app.route("/dashboard")
+@app.route("/dashboard/<int:page>")
 @login_required
-def dashboard():
+def dashboard(page=1):
     user_id = session.get('user_id')
-    projects = Project.query.filter_by(created_by=user_id).all()
+    projects = Project.query.filter_by(created_by=user_id).order_by(Project.id.desc()).paginate(page, POSTS_PER_PAGE, False)
     return render_template('dashboard.html', projects=projects)
 
 @app.route("/tagged/<tag>")
@@ -156,7 +158,7 @@ def upload():
 	if image:
 	    filename = secure_filename(image.filename)
 	    filename, ext = filename.split('.', 1)
-	    if ext not in IMG_EXT:
+	    if ext not in IMG_EXTS:
 		return redirect(url_for('dashboard'))
 	    timestamp = cleanTime(str(datetime.utcnow()))
 	    filename = filename + timestamp + '.' + ext
@@ -164,12 +166,14 @@ def upload():
 	    open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'w').write(image_data)
 	    flash('You have uploaded a file')
 	    if form.maxColors.data:
-		patternfile = processImage(filename, form.stitches.data, form.maxColors.data)
+		patternfile, across, tall = processImage(filename, form.stitches.data, form.maxColors.data)
+		colors = form.maxColors.data
 	    else:
-		patternfile = processImage(filename, form.stitches.data)
+		patternfile, across, tall = processImage(filename, form.stitches.data)
+		colors = 256
 	    os.remove(UPLOAD_FOLDER + filename)
 	    patternsave = url_for('static', filename=patternfile)
-	    project = Project(session.get('user_id'), patternsave, form.title.data, form.public.data) 
+	    project = Project(session.get('user_id'), patternsave, form.title.data, form.public.data, across, tall, colors) 
 	    db_session.add(project)
 	    db_session.commit()
 	    tags = form.tags.data

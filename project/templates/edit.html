@@ -5,19 +5,21 @@
 	<h2>Make changes to "{{project.title}}"</h2>
 	<!-- Main column -->
 	<div class="content-main">
-	    Created by <a href="{{url_for('user', username=project.author.username)}}">{{project.author.username}}</a>
-	    <br> Status: 
-	    {% if project.public %}
-		Public
-	    {% else %}
-		Private
-	    {% endif %}
-	    <br>Tags:
-		{% for tag in project.tags %}
-		    <a class="tag" href="{{url_for('tagged', tag=tag)}}">{{tag.tag}}</a>
+	    <p>
+		Created by <a href="{{url_for('user', username=project.author.username)}}">{{project.author.username}}</a>
+		<br> Status: 
+		{% if project.public %}
+		    Public
 		{% else %}
-		    no tags
-		{% endfor %}
+		    Private
+		{% endif %}
+		<br>Tags:
+		    {% for tag in project.tags %}
+			<a class="tag" href="{{url_for('tagged', tag=tag)}}">{{tag.tag}}</a>
+		    {% else %}
+			no tags
+		    {% endfor %}
+	    </p>
 	    <img class="project-preview" src="{{project.file_path}}" />
 	</div>
 
