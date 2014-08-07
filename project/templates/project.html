@@ -9,9 +9,9 @@
 		Created by <a href="{{url_for('user', username=project.author.username)}}">{{project.author.username}}</a><br>
 		Status:
 		{% if project.public %}
-		    Public
+		    <span class="fa fa-globe"></span> Public
 		{% else %}
-		    Private
+		    <span class="fa fa-eye-slash"></span> Private
 		{% endif %}
 		<br> Tags:
 		    {% for tag in project.tags %}
