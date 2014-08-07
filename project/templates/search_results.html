@@ -1,10 +1,30 @@
 {% extends "base.html" %}
 
-{% blockcontent %}
+{% block content %}
     <h1>Search results for "{{query}}"</h1>
+    <h3>Users</h3>
+    <a name="users"></a>
     <ul>
-    {% for r in results %}
-	<li>r.title</li>
+	{% for user in users %}
+	    <li></li>
+	{% else %}
+	    <li><em>No users matching "{{query}}"</em></li>
+	{% endfor %}
+    </ul>
+    <h2>Projects</h2>
+    <a name="projects"></a>
+    <ul>
+    {% for r in projects %}
+	<li>{{r.title}}</li>
+    {% endfor %}
+    </ul>
+    <h2>Tags</h2>
+    <a name="tags"></a>
+    <ul>
+    {% for tag in tags %}
+	<li>{{tag.tag}}</li>
+    {% else %}
+	<li><em>No tags matching "{{query}}"</em></li>
     {% endfor %}
     </ul>
 {% endblock %}

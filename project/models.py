@@ -4,7 +4,7 @@ import flask.ext.whooshalchemy as whooshalchemy
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
-app.config['WHOOSH_BASE'] = 'sqliteL///search.db'
+app.config['WHOOSH_BASE'] = 'sqlite:///search.db'
 db = SQLAlchemy(app)
 
 class User(db.Model):
@@ -78,4 +78,6 @@ class Tag(db.Model):
     def __repr__(self):
 	return '<Tag %r>' % self.tag
 
-
+whooshalchemy.whoosh_index(app, User)
+whooshalchemy.whoosh_index(app, Project)
+whooshalchemy.whoosh_index(app, Tag)

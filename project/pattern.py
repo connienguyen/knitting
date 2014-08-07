@@ -1,8 +1,12 @@
+import os
 import math
 from PIL import Image
 
 COLOR_BLACK = (0,0,0)
 COLOR_GREY = (128, 128, 128)
+BASEDIR = os.path.dirname(os.path.realpath(__file__))
+UPLOAD_FOLDER = BASEDIR + '/uploads/'
+SAVE_FOLDER = BASEDIR + '/static/'
 
 # Colors an blockSize x blockSize pixel block + outlining grid
 def colorBlock(blockSize, blockColor, upperLeft, outImage):
@@ -47,7 +51,7 @@ def generatePattern(stitches, blockSize, inImage, outImage):
     return inWidth, inHeight
 	
 def processImage(filename='pikachu.png', stitches=60, maxColors=256):
-    uploadedImage = Image.open('uploads/' + filename)
+    uploadedImage = Image.open(UPLOAD_FOLDER + filename)
     width, height = uploadedImage.size
     width = float(width)
     height = float(height)
@@ -65,7 +69,7 @@ def processImage(filename='pikachu.png', stitches=60, maxColors=256):
     across, tall = generatePattern(stitches, blockSize, miniImage, saveImage)
     filename, ext = filename.split('.', 1)
     saveName = 'images/' + filename + 'pattern.' + ext
-    saveImage.save('static/' + saveName)
+    saveImage.save(SAVE_FOLDER + saveName)
     return saveName, across, tall
 
 #processImage('pikachu.png', 50, 9)

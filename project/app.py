@@ -10,7 +10,8 @@ from werkzeug.utils import secure_filename
 from forms import SearchForm, RegistrationForm, LoginForm, UploadForm, EditProjectForm
 from pattern import processImage
 
-UPLOAD_FOLDER = os.path.dirname(os.path.realpath(__file__)) + '/uploads/'
+BASEDIR = os.path.dirname(os.path.realpath(__file__))
+UPLOAD_FOLDER = BASEDIR + '/uploads/'
 IMG_EXTS = ['jpg', 'jpeg', 'png']
 POSTS_PER_PAGE = 2
 
@@ -31,8 +32,7 @@ def cleanTime(timeString):
 
 @app.before_request
 def before_request():
-    print "Does this"
-    g.search_form = SearchForm()
+    g.search_form = SearchForm(request.form)
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):
@@ -66,8 +66,10 @@ def search():
 
 @app.route("/search/<query>")
 def search_results(query):
-    results = Projects.query.whoosh_search(query, 3).all()
-    return render_template('search_results.html', query=query, results=result)
+    users = User.query.whoosh_search(query, 3).all()
+    projects = Project.query.whoosh_search(query, 3).all()
+    tags = Tag.query.whoosh_search(query, 100).all()
+    return render_template('search_results.html', query=query, users=users, projects=projects, tags=tags)
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
