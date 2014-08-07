@@ -3,3 +3,4 @@ env/
 *.db
 project/uploads/
 project/static/images/
+venv/
