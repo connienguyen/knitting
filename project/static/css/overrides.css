@@ -39,8 +39,13 @@ a.tag:hover {
     background-color: #42CFC3;
 }
 
-a.table-project-title {
+.table-project-title {
     font-size: 18pt;
+}
+
+#glass {
+    color: #ffffff;
+    padding-left: 3px;
 }
 
 .navbar-inverse {
@@ -125,6 +130,12 @@ a.table-project-title {
 .pagination > .active > span:focus {
     background-color: #42CFC3;
     border-color: #38C5B9;
+}
+
+.search-result {
+    width: 100%;
+    margin: 20px 0px;
+    padding: 0px 10px;
 }
 
 .footer, .push {

@@ -17,7 +17,12 @@
 		    {% for project in projects.items %}
 			<tr>
 			    <td><img class="project-thumb" src="{{project.file_path}}"></td>
-			    <td><a class="table-project-title" href="{{url_for('project', pid=project.id)}}">{{project.title}}</a></td>
+			    <td><div class="table-project-title"> 
+				{% if not project.public %}
+				    <span class="fa fa-eye-slash"></span>
+				 {% endif %}
+				<a class="table-project-title" href="{{url_for('project', pid=project.id)}}">{{project.title}}</a></div>
+			    </td>
 			    <td> {% for tag in project.tags %}
 				    <a class="tag" href="{{url_for('tagged', tag=tag.tag)}}">{{tag.tag}}</a>
 				 {% else %}

@@ -13,7 +13,8 @@ from pattern import processImage
 BASEDIR = os.path.dirname(os.path.realpath(__file__))
 UPLOAD_FOLDER = BASEDIR + '/uploads/'
 IMG_EXTS = ['jpg', 'jpeg', 'png']
-POSTS_PER_PAGE = 2
+POSTS_PER_PAGE = 10
+MAX_SEARCH = 25
 
 app = Flask(__name__)
 app.secret_key = 'Super secret key'
@@ -66,9 +67,13 @@ def search():
 
 @app.route("/search/<query>")
 def search_results(query):
-    users = User.query.whoosh_search(query, 3).all()
-    projects = Project.query.whoosh_search(query, 3).all()
-    tags = Tag.query.whoosh_search(query, 100).all()
+    users = User.query.whoosh_search(query, MAX_SEARCH).all()
+    projects = Project.query.whoosh_search(query, MAX_SEARCH).filter_by(public=True).all()
+    qtags = Tag.query.whoosh_search(query, MAX_SEARCH).all()
+    tags = []
+    for tag in qtags:
+	if tag.tag not in tags:
+	    tags.append(tag.tag)
     return render_template('search_results.html', query=query, users=users, projects=projects, tags=tags)
 
 @app.route("/login", methods=['GET', 'POST'])
