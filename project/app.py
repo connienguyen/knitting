@@ -60,7 +60,6 @@ def index():
 
 @app.route("/search", methods=['POST'])
 def search():
-    print "Search query", g.search_form.search.data
     if not g.search_form.validate():
 	return redirect(url_for('index'))
     return redirect(url_for('search_results', query=g.search_form.search.data))
@@ -159,6 +158,7 @@ def removeProject(pid):
     project = Project.query.filter_by(id=pid).first()
     user = User.query.filter_by(id=session.get('user_id')).first()
     if user == project.author:
+	os.remove(BASEDIR + project.file_path)
 	for tag in project.tags:
 	    db_session.delete(tag)
 	db_session.delete(project)
