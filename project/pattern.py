@@ -71,5 +71,3 @@ def processImage(filename='pikachu.png', stitches=60, maxColors=256):
     saveName = 'images/' + filename + 'pattern.' + ext
     saveImage.save(SAVE_FOLDER + saveName)
     return saveName, across, tall
-
-#processImage('pikachu.png', 50, 9)

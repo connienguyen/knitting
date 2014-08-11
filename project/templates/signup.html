@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% from "_formhelpers.html" import render_field %}
 {% block content %}
+    <h2>Sign up for a Knitsie account</h2>
+    <p>Already have an account? <a href="{{url_for('login')}}">Log in here.</a></p>
     <form class="form-signin" method=post action="/signup">
 	<dl>
 	    {{ render_field(form.username) }}

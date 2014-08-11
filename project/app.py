@@ -145,8 +145,9 @@ def editProject(pid):
 		for tag in oldTags:
 		    db_session.delete(tag)
 		for tag in newTags:
-		    tag = Tag(tag.strip(), project.id)
-		    db_session.add(tag)
+		    if tag.strip() != "":
+			tag = Tag(tag.strip(), project.id)
+			db_session.add(tag)
 	    db_session.add(project)
 	    db_session.commit()
 	    return redirect(url_for('project', pid=project.id))
@@ -181,13 +182,13 @@ def user(username, page=1):
 @app.route("/upload", methods=['GET', 'POST'])
 def upload():
     form = UploadForm(request.form)
-    if request.method == 'POST' and form.validate():
+    if request.method == 'POST' and form.validate() and current_user.is_authenticated():
 	image = request.files['image']
 	if image:
 	    filename = secure_filename(image.filename)
 	    filename, ext = filename.split('.', 1)
 	    if ext not in IMG_EXTS:
-		return redirect(url_for('dashboard'))
+		return redirect(url_for('upload'))
 	    timestamp = cleanTime(str(datetime.utcnow()))
 	    filename = filename + timestamp + '.' + ext
 	    image_data = request.files[image.name].read()
@@ -212,7 +213,7 @@ def upload():
 			tag = Tag(tag.strip(), project.id)
 			db_session.add(tag)
 		db_session.commit()
-	    return redirect(url_for('dashboard'))
+	    return redirect(url_for('project', pid=project.id))
 	return redirect(url_for('index.html'))
     return render_template('upload.html', form = form)
 

@@ -53,7 +53,7 @@ class LoginForm(Form):
 	return True
 
 class UploadForm(Form):
-    image = FileField('Image File', [checkfile])
+    image = FileField('Image File - .png, .jpg, .jpeg', [checkfile])
     stitches = IntegerField('Stitches across', [
 	    validators.Required(),
 	    validators.NumberRange(min=4, max=300, message="Number of stitches across must be between 4 and 300")])

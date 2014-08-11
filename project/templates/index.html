@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="content-wrapper">
-    <p class="lead"> Hello, this is a knitting chart generator.</p>
-    <p>Sign up and upload images to create your own custom knitting charts. </p>
+    <h2>Welcome to Knitsie!</h2>
+    <p class="lead">Knitsie is a knitting chart generator that takes uploaded images and creates custom knitting charts.</p>
+    <p>With Knitsie, you can specify the number of stitches across and maximum number of colors in your chart. <a href="{{url_for('signup')}}">Sign up</a> now to start creating your own custom knitting charts like the one below!</p>
+    <img style="max-width: 100%;" src="/static/img/knitExample.png">
 </div>
 {% endblock %}
 

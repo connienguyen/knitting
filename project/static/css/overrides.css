@@ -6,6 +6,7 @@ html, body {
 
 h2 {
     margin: 0px;
+    padding-bottom: 7px;
 }
 
 h2.project-title {
@@ -14,6 +15,7 @@ h2.project-title {
 
 h3 {
     margin: 0px;
+    padding-bottom: 10px;
 }
 
 a {
@@ -37,6 +39,14 @@ a.tag {
 
 a.tag:hover {
     background-color: #42CFC3;
+}
+
+dd {
+    margin-bottom: 7px;
+}
+
+p.lead {
+    margin-bottom: 8px;
 }
 
 .table-project-title {
@@ -68,6 +78,7 @@ a.tag:hover {
   color: #ffffff;
   height: 50px;
 }
+
 .navbar-inverse .navbar-nav > li > a:hover,
 .navbar-inverse .navbar-nav > li > a:focus {
   background-color: transparent;
@@ -80,7 +91,7 @@ a.tag:hover {
 }
 
 #content {
-    padding-top: 50px;
+    padding-top: 30px;
     padding-bottom: 30px;
 }
 
@@ -120,6 +131,11 @@ a.tag:hover {
 .content-side .btn {
     width: 85%;
     margin-bottom: 10px;
+}
+
+.instructions {
+    font-size: 9pt;
+    padding-bottom: 10px;
 }
 
 .pagination > .active > a,
