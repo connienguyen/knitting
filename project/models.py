@@ -4,7 +4,7 @@ import flask.ext.whooshalchemy as whooshalchemy
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
-app.config['WHOOSH_BASE'] = 'sqlite:///search.db'
+app.config['WHOOSH_BASE'] = 'search.db'
 db = SQLAlchemy(app)
 
 class User(db.Model):
