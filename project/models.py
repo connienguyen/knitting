@@ -3,7 +3,8 @@ from flask.ext.sqlalchemy import SQLAlchemy
 import flask.ext.whooshalchemy as whooshalchemy
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://knitsie:knittingiscool!!!@localhost/knitsie'
 app.config['WHOOSH_BASE'] = 'search.db'
 db = SQLAlchemy(app)
 
