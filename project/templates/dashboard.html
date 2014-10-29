@@ -2,14 +2,23 @@
 {% block content %}
     <div class="content-wrapper">
     <h2>Hello, <a href="{{url_for('user', username=current_user.username)}}">{{ current_user.username }}</a>!</h2>
+    <div class="row">
+
+	<!-- Side column -->
+	<div class="col-sm-4 col-sm-push-8">
+	    <div class="content-side">
+		<a href="{{url_for('upload')}}" class="btn btn-success override">Upload a new project</a>
+	    </div>
+	</div>
+
 	<!-- Main column -->
-	<div class="content-main">
+	<div class="col-sm-8 col-sm-pull-4">
 	    <table class="table table-striped">
 		<thead>
 		    <tr>
-			<th class="col-md-2"></th>
-			<th class="col-md-6"></th>
-			<th class="col-md-4"></th>
+			<th class="col-sm-2"></th>
+			<th class="col-sm-6"></th>
+			<th class="col-sm-4"></th>
 		    </tr>
 		</thead>
 		<tbody>
@@ -53,12 +62,9 @@
 		<li class="disabled"><a href="#">Newer &raquo;</a></li>
 	    {% endif %}
 	    </ul>
-	</div>    
+	</div>  <!-- ./main -->  
  
-	<!-- Side column -->
-	<div class="content-side">
-	    <a href="{{url_for('upload')}}" class="btn btn-success override">Upload a new project</a>
-	</div>
+    </div> <!-- ./row -->
     </div>
 {% endblock %}
 

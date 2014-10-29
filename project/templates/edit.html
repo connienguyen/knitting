@@ -3,8 +3,27 @@
 {% block content %}
     <div class="content-wrapper">
 	<h2>Make changes to "{{project.title}}"</h2>
+    <div class="row">
+
+	<!-- Side column -->	
+	<div class="content-side col-sm-4 col-sm-push-8">
+	    <h3>Edit project details</h3>
+	    <p class="instructions">
+		Change only the fields you want to edit. Any fields you do not change or leave blank will remain the same.
+	    </p>
+	    <form method=post action="{{url_for('editProject', pid=project.id)}}">
+		<dl>
+		    {{render_field(form.title)}}
+		    {{render_field(form.tags)}}
+		    {{render_field(form.status)}}
+		</dl>
+		<input type=submit class="btn btn-info" value="Save changes">
+		<a href="{{url_for('project', pid=project.id)}}" class="btn btn-default">Cancel</a>
+	    </form>
+	</div>
+
 	<!-- Main column -->
-	<div class="content-main">
+	<div class="col-sm-8 col-sm-pull-4">
 	    <p>
 		Created by <a href="{{url_for('user', username=project.author.username)}}">{{project.author.username}}</a>
 		<br> Status: 
@@ -24,6 +43,7 @@
 	</div>
 
 	<!-- Side column -->
+<!--
 	<div class="content-side">
 	    <h3>Edit project details</h3>
 	    <p class="instructions">
@@ -39,6 +59,8 @@
 		<a href="{{url_for('project', pid=project.id)}}" class="btn btn-default">Cancel</a>
 	    </form>
 	</div>
+-->
+	</div> <!-- ./row -->
     </div>
 {% endblock %}
 

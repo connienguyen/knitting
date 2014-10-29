@@ -58,6 +58,11 @@ p.lead {
     padding-left: 3px;
 }
 
+.navbar-toggle {
+    background-color: #FF9900;
+    border: 1px solid #ffffff !important;
+}
+
 .navbar-inverse {
   background-color: #FF9900;
   border-color: #F79400;
@@ -121,11 +126,6 @@ p.lead {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
-}
-.content-side {
-    width: 30%;
-    margin-left: 5%;
-    float: left;
 }
 
 .content-side .btn {
